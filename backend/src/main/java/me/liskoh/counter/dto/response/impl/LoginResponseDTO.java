@@ -10,22 +10,16 @@ public class LoginResponseDTO extends AResponseDTO {
     private static final String SUCCESS = "Login successful";
 
     private final String username;
-    private final String email;
     private final String token;
 
-    public LoginResponseDTO(String username, String email, String token) {
+    public LoginResponseDTO(String username, String token) {
         super(SUCCESS);
 
         this.username = username;
-        this.email = email;
         this.token = token;
     }
 
     public static LoginResponseDTO of(UserDetails userDetails, String token) {
-        return new LoginResponseDTO(
-                userDetails.getUsername(),
-                userDetails.getUsername(),
-                token
-        );
+        return new LoginResponseDTO(userDetails.getUsername(), token);
     }
 }

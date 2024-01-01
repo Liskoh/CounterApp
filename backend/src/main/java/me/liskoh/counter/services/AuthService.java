@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import me.liskoh.counter.dto.response.AResponseDTO;
 import me.liskoh.counter.dto.response.impl.ErrorResponseDTO;
 import me.liskoh.counter.dto.response.impl.LoginResponseDTO;
+import me.liskoh.counter.dto.response.impl.RegisterResponseDTO;
 import me.liskoh.counter.entities.UserEntity;
-import org.hibernate.cache.spi.support.EntityReadOnlyAccess;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -39,5 +39,20 @@ public class AuthService {
         final String token = jwtService.generateToken(userDetails);
 
         return ResponseEntity.ok().body(LoginResponseDTO.of(userDetails, token));
+    }
+
+    public ResponseEntity<AResponseDTO> register(String username, String password) {
+        final boolean exists = userService.existsByUsername(username);
+
+        if (exists) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(ErrorResponseDTO.USER_ALREADY_EXISTS);
+        }
+
+        final UserEntity user = userService.create(username, password);
+        final String token = jwtService.generateToken(user);
+
+        return ResponseEntity.ok().body(RegisterResponseDTO.of(user, token));
     }
 }

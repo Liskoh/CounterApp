@@ -27,16 +27,14 @@ public class UserEntity implements Serializable, UserDetails {
     private long id;
 
     private String username;
-    private String email;
     private String password;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "permissions")
     private HashSet<PermissionEnum> permissions;
 
-    public UserEntity(String username, String email, String encryptedPassword) {
+    public UserEntity(String username, String encryptedPassword) {
         this.username = username;
-        this.email = email;
         this.password = encryptedPassword;
         this.permissions = new HashSet<>(Constants.DEFAULT_PERMISSIONS);
     }

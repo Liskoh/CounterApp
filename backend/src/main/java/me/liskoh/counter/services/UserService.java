@@ -1,38 +1,35 @@
 package me.liskoh.counter.services;
 
+import lombok.RequiredArgsConstructor;
 import me.liskoh.counter.entities.UserEntity;
 import me.liskoh.counter.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
 
-    @Autowired
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserEntity save(UserEntity user) {
+        return userRepository.save(user);
     }
 
-    public Optional<UserEntity> findByEmail(String email) {
-        return userRepository.findByEmail(email);
+    public UserEntity create(String username, String password) {
+        return save(new UserEntity(username, password));
     }
 
     public Optional<UserEntity> findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 
-    public Optional<UserEntity> findByUsernameOrEmail(String username, String email) {
-        return userRepository.findByUsernameOrEmail(username, email);
+    public boolean existsByUsername(String username) {
+        return userRepository.existsByUsername(username);
     }
-    public String hello(String username) {
-        if (username == null) {
-            return "Hello World!";
-        }
 
-        return "Hello " + username + "!";
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
     }
 }
