@@ -1,6 +1,7 @@
 package me.liskoh.counter.services;
 
 import lombok.RequiredArgsConstructor;
+import me.liskoh.counter.configuration.PasswordConfiguration;
 import me.liskoh.counter.dto.response.AResponseDTO;
 import me.liskoh.counter.dto.response.impl.ErrorResponseDTO;
 import me.liskoh.counter.dto.response.impl.LoginResponseDTO;
@@ -9,7 +10,9 @@ import me.liskoh.counter.entities.UserEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -20,20 +23,21 @@ public class AuthService {
 
     private final UserService userService;
     private final JwtService jwtService;
+
     private final AuthenticationManager authenticationManager;
 
     public ResponseEntity<AResponseDTO> login(String username, String password) {
         final Optional<UserEntity> result = userService.findByUsername(username);
 
         if (result.isEmpty()) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(ErrorResponseDTO.USER_NOT_FOUND);
+            return ResponseEntity.badRequest().body(ErrorResponseDTO.USER_NOT_FOUND);
         }
 
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(username, password)
-        );
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+        } catch (AuthenticationException ignored) {
+            return ResponseEntity.badRequest().body(ErrorResponseDTO.INVALID_CREDENTIALS);
+        }
 
         final UserDetails userDetails = result.get();
         final String token = jwtService.generateToken(userDetails);

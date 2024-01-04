@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Data
@@ -31,7 +32,7 @@ public class UserEntity implements Serializable, UserDetails {
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "permissions")
-    private HashSet<PermissionEnum> permissions;
+    private Set<Integer> permissions;
 
     public UserEntity(String username, String encryptedPassword) {
         this.username = username;
@@ -43,8 +44,18 @@ public class UserEntity implements Serializable, UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return permissions
                 .stream()
-                .map(permission -> new SimpleGrantedAuthority(permission.name()))
+                .map(permission -> new SimpleGrantedAuthority(PermissionEnum.fromId(permission).name()))
                 .collect(Collectors.toSet());
+    }
+
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
     }
 
     @Override
