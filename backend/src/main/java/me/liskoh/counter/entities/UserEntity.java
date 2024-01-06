@@ -1,20 +1,21 @@
 package me.liskoh.counter.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import me.liskoh.counter.constants.RoleEnum;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Set;
 
-@Data
+@ToString
+@Getter
+@Setter
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
