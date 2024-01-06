@@ -1,5 +1,6 @@
 package me.liskoh.counter.services;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.liskoh.counter.entities.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,27 +12,21 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-@Slf4j
+@RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
+
+    private static final UsernameNotFoundException USERNAME_NOT_FOUND_EXCEPTION;
+
+    static {
+        USERNAME_NOT_FOUND_EXCEPTION = new UsernameNotFoundException("User not found");
+    }
 
     private final UserService userService;
 
-    @Autowired
-    public UserDetailsServiceImpl(UserService userService) {
-        this.userService = userService;
-    }
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        try {
             Optional<UserEntity> result = userService.findByUsername(username);
-            if (result.isPresent()) {
-                return result.get();
-            }
-        } catch (Exception exception) {
-            log.error("Error while loading user by username", exception);
-        }
 
-        throw new UsernameNotFoundException("User not found");
+            return result.orElseThrow(() -> USERNAME_NOT_FOUND_EXCEPTION);
     }
 }

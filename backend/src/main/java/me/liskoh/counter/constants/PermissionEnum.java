@@ -1,9 +1,5 @@
 package me.liskoh.counter.constants;
 
-import lombok.Getter;
-import me.liskoh.counter.exceptions.permission.UnknownPermissionIdException;
-
-import java.util.Arrays;
 
 public enum PermissionEnum {
 

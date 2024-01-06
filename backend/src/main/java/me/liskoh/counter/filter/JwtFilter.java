@@ -40,10 +40,11 @@ public class JwtFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain) throws ServletException, IOException {
 
-        log.info("Filtering request: {}", request.getServletPath());
+        log.debug("Filtering request: {}", request.getServletPath());
 
         /* Allow authentication requests */
         if (request.getServletPath().contains(AUTH_PATH)) {
+            log.debug("Allowing authentication request");
             filterChain.doFilter(request, response);
             return;
         }

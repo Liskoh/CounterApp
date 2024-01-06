@@ -26,15 +26,7 @@ public class CounterController {
 
     @GetMapping("/find-all")
     public ResponseEntity<?> findAll() {
+        return ResponseEntity.ok().body("Find all counter");
     }
 
-    user =result.get();
-        return user.getCounters().
-
-    isEmpty() ?ResponseEntity.ok().
-
-    body("No counters") :ResponseEntity.ok().
-
-    body(user.getCounters());
-}
 }

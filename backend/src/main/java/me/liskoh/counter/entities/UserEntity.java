@@ -34,7 +34,6 @@ public class UserEntity implements Serializable, UserDetails {
     @Enumerated(EnumType.STRING)
     private RoleEnum role;
 
-
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<CounterEntity> counters;
 

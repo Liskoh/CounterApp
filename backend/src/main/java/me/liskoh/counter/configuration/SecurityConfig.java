@@ -49,6 +49,7 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(HttpMethod.GET, "/api/v1/hello").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/login", "/api/v1/auth/register").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/counter/add").hasAuthority(PermissionEnum.ADD_SELF_COUNTER.name())
                         .requestMatchers(HttpMethod.GET, "/api/v1/counter/find-all").hasAuthority(PermissionEnum.VIEW_SELF_COUNTER.name())
