@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
+@RestController
 @RequestMapping(
         value = "/api/v1/auth"
 //        consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -24,13 +25,12 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<AResponseDTO> register(@Valid @RequestBody RegisterInputDTO input) {
-        System.out.printf("username: %s, password: %s\n", input.getUsername(), input.getPassword());
+    public ResponseEntity<AResponseDTO> register(@RequestBody RegisterInputDTO input) {
         return authService.register(input.getUsername(), input.getPassword());
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AResponseDTO> login(@Valid @RequestBody LoginInputDTO input) {
+    public ResponseEntity<AResponseDTO> login(@RequestBody LoginInputDTO input) {
         return authService.login(input.getUsername(), input.getPassword());
     }
 }
