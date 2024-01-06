@@ -33,13 +33,12 @@ public class UserService {
         return userRepository.existsByUsername(username);
     }
 
-    public UserEntity getFromAuth() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (authentication == null || !(authentication.getPrincipal() instanceof UserEntity)) {
-            return null;
+    public Optional<UserEntity> getFromAuth() {
+        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getPrincipal() instanceof UserEntity user) {
+            return Optional.of(user);
         }
 
-        return (UserEntity) authentication.getPrincipal();
+        return Optional.empty();
     }
 }

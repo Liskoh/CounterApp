@@ -4,48 +4,50 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import me.liskoh.counter.constants.Constants;
-import me.liskoh.counter.constants.PermissionEnum;
+import me.liskoh.counter.constants.RoleEnum;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Data
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "users")
 public class UserEntity implements Serializable, UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Column(unique = true, updatable = false, nullable = false)
     private String username;
+
+    @Column(nullable = false)
     private String password;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "permissions")
-    private Set<Integer> permissions;
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private RoleEnum role;
+
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<CounterEntity> counters;
 
     public UserEntity(String username, String encryptedPassword) {
         this.username = username;
         this.password = encryptedPassword;
-        this.permissions = new HashSet<>(Constants.DEFAULT_PERMISSIONS);
+        this.role = RoleEnum.DEFAULT;
+        this.counters = Set.of();
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return permissions
-                .stream()
-                .map(permission -> new SimpleGrantedAuthority(PermissionEnum.fromId(permission).name()))
-                .collect(Collectors.toSet());
+        return role.getAuthorities();
     }
 
     @Override

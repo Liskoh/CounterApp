@@ -4,8 +4,6 @@ import java.util.HashSet;
 
 public class Constants {
 
-    public static final HashSet<Integer> DEFAULT_PERMISSIONS = new HashSet<>() {{
-        add(PermissionEnum.ADD_SELF_COUNTER.getId());
-        add(PermissionEnum.VIEW_SELF_COUNTER.getId());
-    }};
+    public static final String ROLE_PREFIX = "ROLE_";
+
 }

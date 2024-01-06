@@ -2,6 +2,7 @@ package me.liskoh.counter.controllers;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import me.liskoh.counter.repositories.CounterRepository;
 import me.liskoh.counter.services.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,15 +17,24 @@ import org.springframework.web.bind.annotation.RestController;
 public class CounterController {
 
     private final UserService userService;
+    private final CounterRepository counterRepository;
 
     @PostMapping("/add")
     public ResponseEntity<?> add() {
-        log.info("User: {}", userService.getFromAuth());
         return ResponseEntity.ok().body("Add counter");
     }
 
     @GetMapping("/find-all")
     public ResponseEntity<?> findAll() {
-        return ResponseEntity.ok().body("Find all counter");
     }
+
+    user =result.get();
+        return user.getCounters().
+
+    isEmpty() ?ResponseEntity.ok().
+
+    body("No counters") :ResponseEntity.ok().
+
+    body(user.getCounters());
+}
 }

@@ -5,29 +5,14 @@ import me.liskoh.counter.exceptions.permission.UnknownPermissionIdException;
 
 import java.util.Arrays;
 
-@Getter
 public enum PermissionEnum {
 
-    ADD_SELF_COUNTER(1),
-    ADD_OTHER_COUNTER(2),
+    ADD_SELF_COUNTER,
+    ADD_OTHER_COUNTER,
+    VIEW_SELF_COUNTER,
+    VIEW_OTHER_COUNTER,
 
-    VIEW_SELF_COUNTER(3),
-    VIEW_OTHER_COUNTER(4),
-
-    ADD_PERMISSION(5),
-    REMOVE_PERMISSION(6),
+    ADD_PERMISSION,
+    REMOVE_PERMISSION,
     ;
-
-    private final int id;
-
-    PermissionEnum(int id) {
-        this.id = id;
-    }
-
-    public static PermissionEnum fromId(int id) {
-        return Arrays.stream(PermissionEnum.values())
-                .filter(permissionEnum -> permissionEnum.getId() == id)
-                .findFirst()
-                .orElseThrow(() -> new UnknownPermissionIdException(id));
-    }
 }
