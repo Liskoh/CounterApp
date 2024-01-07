@@ -9,6 +9,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
 
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -19,7 +20,6 @@ public class ValidationExceptionAdvice {
     private static final String VALIDATION_FAILED = "Validation failed";
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<ErrorResponseDTO> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
         Map<String, Object> errors = exception.getBindingResult()
                 .getFieldErrors()
@@ -30,5 +30,10 @@ public class ValidationExceptionAdvice {
                 ));
 
         return ResponseEntity.badRequest().body(ErrorResponseDTO.of(VALIDATION_FAILED, errors));
+    }
+
+    @ExceptionHandler(HandlerMethodValidationException.class)
+    public ResponseEntity<ErrorResponseDTO> handleHandlerMethodValidationException(HandlerMethodValidationException exception) {
+        return ResponseEntity.badRequest().body(ErrorResponseDTO.of(VALIDATION_FAILED));
     }
 }

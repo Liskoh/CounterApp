@@ -2,6 +2,7 @@ package me.liskoh.counter.configuration;
 
 import lombok.RequiredArgsConstructor;
 import me.liskoh.counter.constants.PermissionEnum;
+import me.liskoh.counter.constants.RoleEnum;
 import me.liskoh.counter.filter.JwtFilter;
 import me.liskoh.counter.services.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
@@ -57,9 +58,21 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.GET, "/api/v1/hello").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/login", "/api/v1/auth/register").permitAll()
+
+                        /* User endpoints */
                         .requestMatchers(HttpMethod.POST, "/api/v1/counter/add").hasAuthority(PermissionEnum.ADD_SELF_COUNTER.name())
-                        .requestMatchers(HttpMethod.GET, "/api/v1/counter/find-all").hasAuthority(PermissionEnum.VIEW_SELF_COUNTER.name())
+                        .requestMatchers(HttpMethod.GET, "/api/v1/counter/find-personal-counter/{id}").hasAuthority(PermissionEnum.VIEW_SELF_COUNTER.name())
+                        .requestMatchers(HttpMethod.GET, "/api/v1/counter/find-counters").hasAuthority(PermissionEnum.VIEW_SELF_COUNTER.name())
+
+                        /* Moderator endpoints */
+                        .requestMatchers(HttpMethod.GET, "/api/v1/counter/find-counter/{id}").hasAuthority(PermissionEnum.VIEW_OTHER_COUNTER.name())
+                        .requestMatchers(HttpMethod.GET, "/api/v1/counter/find-counters/{username}").hasAuthority(PermissionEnum.VIEW_OTHER_COUNTER.name())
+
+                        /* Admin endpoints */
+                        .requestMatchers(HttpMethod.GET, "/api/v1/counter/find-all-counters").hasRole(RoleEnum.ADMINISTRATOR.name())
+
                         .anyRequest().authenticated()
+
                 )
                 .authenticationProvider(authenticationProvider()).addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 

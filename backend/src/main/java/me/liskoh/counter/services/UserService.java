@@ -23,7 +23,13 @@ public class UserService {
     }
 
     public UserEntity create(String username, String password) {
-        return save(new UserEntity(username, passwordEncoder.encode(password)));
+        return create(new UserEntity(username, password));
+    }
+
+    public UserEntity create(UserEntity user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        return save(user);
     }
 
     public UserEntity findByUsername(String username) {

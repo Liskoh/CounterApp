@@ -1,8 +1,10 @@
 package me.liskoh.counter.controllers;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import me.liskoh.counter.dto.input.UsernameInputDTO;
 import me.liskoh.counter.dto.response.impl.CounterResponseDTO;
 import me.liskoh.counter.entities.CounterEntity;
 import me.liskoh.counter.entities.UserEntity;
@@ -41,7 +43,7 @@ public class CounterController {
     }
 
     @GetMapping("/find-counters/{username}")
-    public ResponseEntity<Set<CounterResponseDTO>> findAllByUsername(@PathVariable String username) {
-        return counterService.findCounters(username);
+    public ResponseEntity<Set<CounterResponseDTO>> findAllByUsername(@Valid UsernameInputDTO username) {
+        return counterService.findCounters(username.username());
     }
 }
