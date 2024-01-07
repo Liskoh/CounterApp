@@ -1,6 +1,7 @@
 package me.liskoh.counter.services;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
@@ -61,7 +62,7 @@ public class JwtService {
                     .build()
                     .parseSignedClaims(token)
                     .getPayload();
-        } catch (SignatureException e) {
+        } catch (JwtException e) {
             log.warn("Invalid token: {}", e.getMessage());
             return null;
         }

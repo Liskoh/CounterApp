@@ -25,6 +25,10 @@ public class ErrorResponseDTO extends AResponseDTO {
         this.errors = errors;
     }
 
+    public static ErrorResponseDTO of(String message) {
+        return new ErrorResponseDTO(message);
+    }
+
     public static ErrorResponseDTO of(String message, Map<String, Object> errors) {
         return new ErrorResponseDTO(message, errors);
     }

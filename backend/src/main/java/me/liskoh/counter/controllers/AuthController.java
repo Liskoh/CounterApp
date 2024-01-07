@@ -26,11 +26,11 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<AResponseDTO> register(@Valid @RequestBody RegisterInputDTO input) {
-        return authService.register(input.getUsername(), input.getPassword());
+        return authService.register(input.username(), input.password());
     }
 
     @PostMapping("/login")
     public ResponseEntity<AResponseDTO> login(@Valid @RequestBody LoginInputDTO input) {
-        return authService.login(input.getUsername(), input.getPassword());
+        return authService.login(input.username(), input.password());
     }
 }

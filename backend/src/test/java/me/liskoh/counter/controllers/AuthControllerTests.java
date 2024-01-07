@@ -24,6 +24,6 @@ public class AuthControllerTests {
         LoginInputDTO loginInputDTO = new LoginInputDTO("", "");
 
         authController.login(loginInputDTO);
-        verify(authService).login(loginInputDTO.getUsername(), loginInputDTO.getPassword());
+        verify(authService).login(loginInputDTO.username(), loginInputDTO.password());
     }
 }

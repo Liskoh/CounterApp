@@ -27,19 +27,19 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
 
     public ResponseEntity<AResponseDTO> login(String username, String password) {
-        final Optional<UserEntity> result = userService.findByUsername(username);
+//        final Optional<UserEntity> result = userService.findByUsername(username);
+//
+//        if (result.isEmpty()) {
+//            return ResponseEntity.badRequest().body(ErrorResponseDTO.USER_NOT_FOUND);
+//        }
 
-        if (result.isEmpty()) {
-            return ResponseEntity.badRequest().body(ErrorResponseDTO.USER_NOT_FOUND);
-        }
-
-        try {
+//        try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-        } catch (AuthenticationException ignored) {
-            return ResponseEntity.badRequest().body(ErrorResponseDTO.INVALID_CREDENTIALS);
-        }
+//        } catch (AuthenticationException ignored) {
+//            return ResponseEntity.badRequest().body(ErrorResponseDTO.INVALID_CREDENTIALS);
+//        }
 
-        final UserDetails userDetails = result.get();
+        final UserDetails userDetails = userService.findByUsername(username);
         final String token = jwtService.generateToken(userDetails);
 
         return ResponseEntity.ok().body(LoginResponseDTO.of(userDetails, token));

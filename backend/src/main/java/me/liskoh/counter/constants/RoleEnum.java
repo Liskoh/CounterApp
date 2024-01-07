@@ -18,7 +18,6 @@ public enum RoleEnum {
     MODERATOR(DEFAULT, Set.of(
             PermissionEnum.ADD_SELF_COUNTER,
             PermissionEnum.VIEW_SELF_COUNTER,
-            PermissionEnum.ADD_OTHER_COUNTER,
             PermissionEnum.VIEW_OTHER_COUNTER
     )),
     ADMINISTRATOR(MODERATOR, Set.of(
