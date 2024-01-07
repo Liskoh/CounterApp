@@ -183,4 +183,5 @@ application.windows32
 application.windows64
 application.macosx
 out
-
+*.idea
+.idea
