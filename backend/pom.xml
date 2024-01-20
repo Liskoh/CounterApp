@@ -96,7 +96,7 @@
 			<version>2.2.220</version>
 			<scope>test</scope>
 		</dependency>
-    </dependencies>
+	</dependencies>
 
 	<build>
 		<plugins>
