@@ -1,10 +1,8 @@
 package me.liskoh.counter.services;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import io.jsonwebtoken.security.SignatureException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,7 +11,6 @@ import org.springframework.stereotype.Service;
 import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 
 @Slf4j
 @Service
@@ -42,12 +39,11 @@ public class JwtService {
                 .compact();
     }
 
-    public boolean isExpired(String token, long now) {
-        return getExpiration(token) < now;
+    public boolean isExpired(Claims claims, String token, long now) {
+        return getExpiration(claims, token) < now;
     }
 
-    private long getExpiration(String token) {
-        Claims claims = getClaims(token);
+    private long getExpiration(Claims claims, String token) {
         if (claims == null || claims.getExpiration() == null) {
             return 0;
         }
@@ -62,14 +58,12 @@ public class JwtService {
                     .build()
                     .parseSignedClaims(token)
                     .getPayload();
-        } catch (JwtException e) {
-            log.warn("Invalid token: {}", e.getMessage());
+        } catch (Exception e) {
             return null;
         }
     }
 
-    public String getUsername(String token) {
-        Claims claims = getClaims(token);
+    public String getUsername(Claims claims, String token) {
         if (claims == null || claims.getSubject() == null) {
             return null;
         }

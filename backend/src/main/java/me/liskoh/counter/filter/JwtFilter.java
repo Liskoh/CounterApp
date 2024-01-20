@@ -1,5 +1,6 @@
 package me.liskoh.counter.filter;
 
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -59,8 +60,9 @@ public class JwtFilter extends OncePerRequestFilter {
         /* Check if token is expired, has a valid username and if user is already authenticated */
         final long now = System.currentTimeMillis();
         final String token = StringUtils.removeStart(authorizationHeader, BEARER);
-        final boolean expired = jwtService.isExpired(token, now);
-        final String username = jwtService.getUsername(token);
+        final Claims claims = jwtService.getClaims(token);
+        final boolean expired = jwtService.isExpired(claims, token, now);
+        final String username = jwtService.getUsername(claims, token);
         if (expired || StringUtils.isBlank(username) || SecurityContextHolder.getContext().getAuthentication() != null) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid token");
             return;

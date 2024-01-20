@@ -1,17 +1,12 @@
 package me.liskoh.counter;
 
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.io.Encoders;
-import io.jsonwebtoken.security.Keys;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.crypto.codec.Hex;
 
 import javax.crypto.SecretKey;
-import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
-import java.util.Base64;
+import java.util.concurrent.TimeUnit;
 
 @SpringBootApplication
 public class CounterApplication {
@@ -21,6 +16,7 @@ public class CounterApplication {
             SecretKey key = Jwts.SIG.HS512.key().build();
             String hex = new String(Hex.encode(key.getEncoded()));
             System.out.println("Key: " + hex);
+            System.out.println("time: " + TimeUnit.DAYS.toMillis(1L));
         } catch (Exception e) {
             e.printStackTrace();
         }
