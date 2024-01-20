@@ -6,13 +6,11 @@ import me.liskoh.counter.dto.response.impl.CounterResponseDTO;
 import me.liskoh.counter.entities.CounterEntity;
 import me.liskoh.counter.entities.UserEntity;
 import me.liskoh.counter.exceptions.impl.CounterNotFoundException;
-import me.liskoh.counter.exceptions.impl.UserNotFoundException;
 import me.liskoh.counter.repositories.CounterRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 

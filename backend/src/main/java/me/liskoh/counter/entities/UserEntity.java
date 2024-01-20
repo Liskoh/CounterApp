@@ -3,13 +3,10 @@ package me.liskoh.counter.entities;
 import jakarta.persistence.*;
 import lombok.*;
 import me.liskoh.counter.constants.RoleEnum;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Set;
 

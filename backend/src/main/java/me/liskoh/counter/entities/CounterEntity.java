@@ -1,9 +1,9 @@
 package me.liskoh.counter.entities;
 
 import jakarta.persistence.*;
-import lombok.*;
-
-import java.lang.annotation.Annotation;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
